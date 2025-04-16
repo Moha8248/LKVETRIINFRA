@@ -50,7 +50,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'LKVETRIINFRA.urls'
+ROOT_URLCONF = 'api.urls'
 
 TEMPLATES = [
     {
@@ -67,8 +67,6 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'LKVETRIINFRA.wsgi.application'
-app = get_wsgi_application()
 # api/settings.py
 WSGI_APPLICATION = 'api.wsgi.app'
 
