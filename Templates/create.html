@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Land Request</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f7fc;
+            margin: 0;
+            padding: 0;
+        }
+        h2 {
+            text-align: center;
+            margin-top: 30px;
+            color: #333;
+        }
+        .form-container {
+            width: 80%;
+            max-width: 600px;
+            margin: 30px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .form-container h4 {
+            margin-bottom: 10px;
+            color: #333;
+        }
+        .form-container p {
+            margin: 15px 0;
+        }
+        .form-container label {
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 5px;
+            display: block;
+        }
+        .form-container input, .form-container select, .form-container textarea {
+            width: 100%;
+            padding: 10px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            margin-top: 5px;
+        }
+        .form-container input[type="submit"], .form-container button {
+            width: 100%;
+            background-color: #007bff;
+            color: white;
+            padding: 12px;
+            font-size: 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background-color 0.3s;
+        }
+        .form-container input[type="submit"]:hover, .form-container button:hover {
+            background-color: #0056b3;
+        }
+        .form-container textarea {
+            height: 150px;
+            resize: vertical;
+        }
+        .form-container input[type="submit"]:focus, .form-container button:focus {
+            outline: none;
+        }
+        .form-container .form-group {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Create Land Request</h2>
+
+    <div class="form-container">
+        <form method="post">
+            {% csrf_token %}
+
+            <!-- Client Name and Mobile -->
+            <div class="form-group">
+                <label for="{{ form.client_name.id_for_label }}">{{ form.client_name.label }}</label>
+                {{ form.client_name }}
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.mobile_number.id_for_label }}">{{ form.mobile_number.label }}</label>
+                {{ form.mobile_number }}
+            </div>
+
+            <h4>User Address</h4>
+            <!-- User Address -->
+            <div class="form-group">
+                <label for="{{ form.user_door_no.id_for_label }}">{{ form.user_door_no.label }}</label>
+                {{ form.user_door_no }}
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.user_area.id_for_label }}">{{ form.user_area.label }}</label>
+                {{ form.user_area }}
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.user_district.id_for_label }}">{{ form.user_district.label }}</label>
+                {{ form.user_district }}
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.user_state.id_for_label }}">{{ form.user_state.label }}</label>
+                {{ form.user_state }}
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.user_country.id_for_label }}">{{ form.user_country.label }}</label>
+                {{ form.user_country }}
+            </div>
+
+            <h4>Land Address</h4>
+            <!-- Land Address -->
+            <div class="form-group">
+                <label for="{{ form.land_area.id_for_label }}">{{ form.land_area.label }}</label>
+                {{ form.land_area }}
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.land_district.id_for_label }}">{{ form.land_district.label }}</label>
+                {{ form.land_district }}
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.land_state.id_for_label }}">{{ form.land_state.label }}</label>
+                {{ form.land_state }}
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.land_country.id_for_label }}">{{ form.land_country.label }}</label>
+                {{ form.land_country }}
+            </div>
+
+            <!-- Area Name, Sqft and Additional Details -->
+            <div class="form-group">
+                <label for="{{ form.area_name.id_for_label }}">{{ form.area_name.label }}</label>
+                {{ form.area_name }}
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.land_required_sqft.id_for_label }}">{{ form.land_required_sqft.label }}</label>
+                {{ form.land_required_sqft }}
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.additional_details.id_for_label }}">{{ form.additional_details.label }}</label>
+                {{ form.additional_details }}
+            </div>
+
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+</body>
+</html>

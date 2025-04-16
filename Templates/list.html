@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Land Requests List</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f4f7fc;
+            margin: 0;
+            padding-top: 100px; /* Added space to prevent overlap from navbar */
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 36px;
+            color: #3b5998;
+        }
+
+        #search-box {
+            width: 100%;
+            padding: 12px 15px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            background-color: #ffffff;
+            margin: 20px auto;
+            max-width: 500px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar {
+            background-color: #ffffff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            padding: 20px 0;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            transition: background-color 0.3s ease;
+        }
+
+        .navbar a {
+            color: #333;
+            text-decoration: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+        }
+
+        .navbar a:hover {
+            background-color: #f2f2f2;
+        }
+
+        .navbar .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #3b5998;
+        }
+
+        .navbar .menu {
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar .menu a {
+            margin: 0 15px;
+        }
+
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+
+        table th,
+        table td {
+            padding: 12px 15px;
+            text-align: left;
+            border: 1px solid #ddd;
+            font-size: 14px;
+        }
+
+        table th {
+            background-color: #3b5998;
+            color: #fff;
+        }
+
+        table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        table tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .mobile-toggle {
+            cursor: pointer;
+            color: #3b5998;
+            text-decoration: underline;
+        }
+
+        .mobile-dropdown {
+            display: none;
+            margin-top: 5px;
+        }
+
+        .mobile-dropdown a {
+            display: block;
+            text-decoration: none;
+            color: #3b5998;
+            font-size: 14px;
+            margin-bottom: 3px;
+        }
+
+        .mobile-dropdown a:hover {
+            text-decoration: underline;
+        }
+
+        /* Mobile Menu Styles */
+        #mobile-menu {
+            display: none;
+            background-color: white;
+            position: absolute;
+            top: 60px;
+            right: 0;
+            width: 100%;
+            padding: 10px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        #mobile-menu a {
+            display: block;
+            text-decoration: none;
+            padding: 8px 0;
+            color: #3b5998;
+            font-size: 16px;
+        }
+
+        #mobile-menu a:hover {
+            background-color: #f2f2f2;
+        }
+
+        /* Mobile View adjustments */
+        @media (max-width: 768px) {
+            body {
+                padding-top: 120px; /* Increase space to accommodate the fixed navbar */
+            }
+
+            h1 {
+                font-size: 28px;
+            }
+
+            #search-box {
+                max-width: 90%;
+                margin: 20px auto;
+            }
+
+            .navbar .menu {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .navbar .menu a {
+                padding: 15px;
+                text-align: center;
+                margin: 5px 0;
+                background-color: #f9f9f9;
+                border-radius: 5px;
+            }
+
+            .navbar .menu a:hover {
+                background-color: #3b5998;
+                color: #fff;
+            }
+
+            #mobile-menu {
+                display: block;
+                position: absolute;
+                top: 60px;
+                right: 0;
+                width: 100%;
+                box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            }
+
+            .mobile-menu-button {
+                display: block;
+            }
+
+            .mobile-toggle {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navigation Bar -->
+    <header class="navbar">
+        <div class="container mx-auto flex justify-between items-center px-6">
+            <!-- Logo -->
+            <div class="logo">
+                LK VETRI INFRA
+            </div>
+
+            <!-- Navigation Links (Desktop) -->
+            <nav class="menu hidden md:flex space-x-8">
+                <a href="{% url 'home' %}">Home</a>
+                <a href="{% url 'home' %}">About Us</a>
+                <a href="{% url 'home' %}">Projects</a>
+                <a href="{% url 'home' %}">Services</a>
+                <a href="{% url 'land_request_list' %}">Workspaces</a>
+            </nav>
+
+            <!-- Mobile Menu Button -->
+            <button id="mobile-menu-button" class="md:hidden text-gray-600 hover:text-gray-900 focus:outline-none">
+                <i class="fas fa-bars text-2xl"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Mobile Menu (Dropdown) -->
+    <div id="mobile-menu" class="hidden md:hidden">
+        <a href="{% url 'home' %}">Home</a>
+        <a href="{% url 'home' %}">About Us</a>
+        <a href="{% url 'home' %}">Projects</a>
+        <a href="{% url 'home' %}">Services</a>
+        <a href="{% url 'land_request_list' %}">Workspaces</a>
+    </div>
+
+    <!-- Search Bar -->
+    <input type="text" id="search-box" placeholder="Search land requests...">
+    
+    <!-- Create Request Button -->
+    <div class="text-center mt-4">
+        <a href="{% url 'create_land_request' %}" class="inline-block px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">Create Request</a>
+    </div>
+
+    <!-- Table to display the results -->
+    <table>
+        <thead>
+            <tr>
+                <th>Client Name</th>
+                <th>Mobile Number</th>
+                <th>User Address</th>
+                <th>Land Address</th>
+                <th>Required Sqft</th>
+                <th>Additional Details</th>
+            </tr>
+        </thead>
+        <tbody id="request-body">
+            <!-- AJAX populated content here -->
+            {% for request in land_requests %}
+            <tr>
+                <td>{{ request.client_name }}</td>
+                <td>
+                    <span class="mobile-toggle" onclick="toggleDropdown('dropdown-{{ forloop.counter }}')">
+                        {{ request.mobile_number }}
+                    </span>
+                    <div class="mobile-dropdown" id="dropdown-{{ forloop.counter }}">
+                        <a href="https://wa.me/{{ request.mobile_number|cut:'+' }}" target="_blank">📱 WhatsApp</a>
+                        <a href="tel:{{ request.mobile_number }}">📞 Call</a>
+                    </div>
+                </td>
+                <td>
+                    {{ request.user_door_no }}, {{ request.user_area }},
+                    {{ request.user_district }}, {{ request.user_state }},
+                    {{ request.user_country }}
+                </td>
+                <td>
+                    {{ request.land_area }}, {{ request.land_district }},
+                    {{ request.land_state }}, {{ request.land_country }}
+                </td>
+                <td>{{ request.land_required_sqft }}</td>
+                <td>{{ request.additional_details }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6" class="no-results">No land requests found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <script>
+        // Function to toggle mobile number dropdown
+        function toggleDropdown(id) {
+            const dropdown = document.getElementById(id);
+            dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+        }
+
+        // AJAX request to filter results dynamically based on the search
+        document.getElementById('search-box').addEventListener('input', function () {
+            const query = this.value;
+
+            // Fetch the filtered data
+            fetch(`/search/?q=${encodeURIComponent(query)}`)
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('request-body').innerHTML = data;
+                });
+        });
+
+        // Mobile menu toggle functionality
+        document.getElementById('mobile-menu-button').addEventListener('click', function () {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        });
+    </script>
+
+</body>
+
+</html>

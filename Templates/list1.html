@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet"/>
+  <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+      background-color: #f4f7fc;
+      margin: 0;
+      padding-top: 100px;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 36px;
+      color: #3b5998;
+    }
+
+    #search-box {
+      width: 100%;
+      padding: 12px 15px;
+      font-size: 16px;
+      border: 1px solid #ddd;
+      border-radius: 20px;
+      background-color: #ffffff;
+      margin: 20px auto;
+      max-width: 500px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    table {
+      width: 100%;
+      margin-top: 20px;
+      border-collapse: collapse;
+    }
+
+    table th, table td {
+      padding: 12px 15px;
+      text-align: left;
+      border: 1px solid #ddd;
+      font-size: 14px;
+    }
+
+    table th {
+      background-color: #3b5998;
+      color: #fff;
+    }
+
+    table tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+
+    table tr:hover {
+      background-color: #f1f1f1;
+    }
+
+    .mobile-toggle {
+      cursor: pointer;
+      color: #3b5998;
+      text-decoration: underline;
+    }
+
+    .mobile-dropdown {
+      display: none;
+      margin-top: 5px;
+    }
+
+    .mobile-dropdown a {
+      display: block;
+      text-decoration: none;
+      color: #3b5998;
+      font-size: 14px;
+      margin-bottom: 3px;
+    }
+
+    .mobile-dropdown a:hover {
+      text-decoration: underline;
+    }
+
+    /* Mobile menu styles */
+    #mobile-menu {
+      display: none;
+      background-color: white;
+      position: absolute;
+      top: 60px;
+      right: 0;
+      width: 100%;
+      padding: 10px;
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+      z-index: 1000;
+    }
+
+    #mobile-menu.active {
+      display: block;
+    }
+
+    #mobile-menu a {
+      display: block;
+      padding: 12px 16px;
+      text-align: center;
+      color: #4a5568;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    #mobile-menu a:hover {
+      background-color: #f7fafc;
+    }
+
+    @media (max-width: 768px) {
+      body {
+        padding-top: 120px;
+      }
+
+      h1 {
+        font-size: 28px;
+      }
+
+      #search-box {
+        max-width: 90%;
+      }
+
+      .navbar .menu {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+      }
+
+      .navbar .menu a {
+        padding: 15px;
+        text-align: center;
+        margin: 5px 0;
+        background-color: #f9f9f9;
+        border-radius: 5px;
+      }
+
+      .navbar .menu a:hover {
+        background-color: #3b5998;
+        color: #fff;
+      }
+    }
+  </style>
+</head>
+
+<body class="bg-white text-gray-800">
+  <!-- Navigation Bar -->
+  <header class="bg-white shadow-md fixed w-full top-0 z-50">
+    <div class="container mx-auto flex justify-between items-center py-4 px-6 relative">
+      <!-- Logo -->
+      <div class="flex items-center">
+        <img alt="LK Vetri Infra Logo" class="logo h-10 w-auto cursor-pointer" src="logo1.png"/>
+        <h1 class="ml-2 text-xl font-bold text-blue-800">LK VETRI INFRA</h1>
+      </div>
+
+      <!-- Desktop Menu -->
+      <nav class="hidden md:flex space-x-8">
+        <a href="#">Home</a>
+        <a href="#">About Us</a>
+        <a href="#">Projects</a>
+        <a href="#">Services</a>
+        <a href="{% url 'land_request_list' %}">Workspaces</a>
+      </nav>
+
+      <!-- CTA Button -->
+      <button class="bg-green-500 text-white px-6 py-2 rounded-full hover:bg-green-600 transition hidden md:block">
+        Enquire Now
+      </button>
+
+      <!-- Mobile Menu Button -->
+      <button id="mobile-menu-button" class="md:hidden text-gray-600 hover:text-gray-900 focus:outline-none">
+        <i class="fas fa-bars text-2xl"></i>
+      </button>
+
+      <!-- Mobile Dropdown -->
+      <div id="mobile-menu" class="md:hidden">
+        <a href="#">Home</a>
+        <a href="#">About Us</a>
+        <a href="#">Projects</a>
+        <a href="#">Services</a>
+        <a href="{% url 'land_request_list' %}">Workspaces</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Search -->
+  <input type="text" id="search-box" placeholder="Search land requests..." />
+
+  <!-- Create Button -->
+  <div class="text-center mt-4">
+    <a href="{% url 'create_land_request' %}" class="inline-block px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+      Create Request
+    </a>
+  </div>
+
+  <!-- Data Table -->
+  <table>
+    <thead>
+      <tr>
+        <th>Client Name</th>
+        <th>Mobile Number</th>
+        <th>User Address</th>
+        <th>Land Address</th>
+        <th>Required Sqft</th>
+        <th>Additional Details</th>
+      </tr>
+    </thead>
+    <tbody id="request-body">
+      {% for request in land_requests %}
+      <tr>
+        <td>{{ request.client_name }}</td>
+        <td>
+          <span class="mobile-toggle" onclick="toggleDropdown('dropdown-{{ forloop.counter }}')">
+            {{ request.mobile_number }}
+          </span>
+          <div class="mobile-dropdown" id="dropdown-{{ forloop.counter }}">
+            <a href="https://wa.me/{{ request.mobile_number|cut:'+' }}" target="_blank">📱 WhatsApp</a>
+            <a href="tel:{{ request.mobile_number }}">📞 Call</a>
+          </div>
+        </td>
+        <td>
+          {{ request.user_door_no }}, {{ request.user_area }}, {{ request.user_district }},
+          {{ request.user_state }}, {{ request.user_country }}
+        </td>
+        <td>
+          {{ request.land_area }}, {{ request.land_district }}, {{ request.land_state }},
+          {{ request.land_country }}
+        </td>
+        <td>{{ request.land_required_sqft }}</td>
+        <td>{{ request.additional_details }}</td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="6" class="text-center py-4">No land requests found.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <!-- Scripts -->
+  <script>
+    document.getElementById('mobile-menu-button').addEventListener('click', function () {
+      const menu = document.getElementById('mobile-menu');
+      menu.classList.toggle('active');
+    });
+
+    document.getElementById('search-box').addEventListener('input', function () {
+      const query = this.value;
+      fetch(`/search/?q=${encodeURIComponent(query)}`)
+        .then(response => response.text())
+        .then(data => {
+          document.getElementById('request-body').innerHTML = data;
+        });
+    });
+
+    function toggleDropdown(id) {
+      const dropdown = document.getElementById(id);
+      dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+    }
+  </script>
+</body>
+</html>
